@@ -1,0 +1,25 @@
+{
+  "name": "demo-exam-app",
+  "version": "1.0.0",
+  "description": "web app for manage users on WSR demo exam",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Foult080/demo-exam-app.git"
+  },
+  "keywords": [
+    "wsr",
+    "demo-exam",
+    "manage",
+    "dashboard"
+  ],
+  "author": "foult080",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Foult080/demo-exam-app/issues"
+  },
+  "homepage": "https://github.com/Foult080/demo-exam-app#readme"
+}
