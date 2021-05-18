@@ -21,5 +21,12 @@
   "bugs": {
     "url": "https://github.com/Foult080/demo-exam-app/issues"
   },
-  "homepage": "https://github.com/Foult080/demo-exam-app#readme"
+  "homepage": "https://github.com/Foult080/demo-exam-app#readme",
+  "dependencies": {
+    "config": "^3.3.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-validator": "^6.11.1",
+    "mysql2": "^2.2.5"
+  }
 }
