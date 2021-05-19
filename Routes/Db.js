@@ -6,20 +6,16 @@ const initialConnect = {
   host: "192.168.70.5",
   user: "appuser",
   password: "pass",
-  database: "DemoExam",
   insecureAuth: true,
 };
 
 //check connection to db
-router.get("/", async (req, res) => {
+router.get("/check", async (req, res) => {
   try {
-    console.log(
-      mysql.createConnection(initialConnect).connect((err) => {
-        if (err) throw err;
-        else console.log("MySQL connected");
-      })
-    );
-    res.send("Hello");
+    mysql.createConnection(initialConnect).connect((err) => {
+      if (err) throw err;
+      else res.json({ msg: "MySQL Connected" });
+    });
   } catch (err) {
     res.status(500).send("Ошибка сервера");
     throw err;

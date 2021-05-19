@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const path = require('path');
-const cors = require('cors');
+const path = require("path");
+const cors = require("cors");
+const connectDB = require("./Config/db");
 
 //use cors policy
 app.use(cors());
@@ -9,13 +10,17 @@ app.use(cors());
 //use json encode
 app.use(express.json({ extended: false }));
 
-app.use("/api/", require("./Routes/Db"));
+//connect to mongoDB Atlas
+connectDB();
+
+app.use("/api/database/", require("./Routes/Db"));
+app.use("/api/users", require("./Routes/Users"));
 
 //resolve static folder for react app
 app.use(express.static("front-app/build"));
 
-app.get("*", (req,res) => {
-    res.sendFile(path.resolve(__dirname, 'front-app', 'build', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "front-app", "build", "index.html"));
 });
 
 //initial port to start

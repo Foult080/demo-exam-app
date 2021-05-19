@@ -1,0 +1,4 @@
+{
+  "MongoURI": "mongodb+srv://kkritApp:kkritAppUser@wsr-kkrit-app-gknzd.mongodb.net/demo-exam-app?retryWrites=true&w=majority",
+  "JWT": "very big secret"
+}
