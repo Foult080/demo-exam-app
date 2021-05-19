@@ -5,6 +5,37 @@ const config = require("config");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../Models/Users");
+const auth = require("../Middleware/Auth");
+
+//@route PUT /api/users
+//desc add database options to user record
+router.put(
+  "/",
+  auth,
+  [
+    check("host", "Укажите адрес хоста для подключения").not().isEmpty(),
+    check("username", "Укажите пользователя базы данных").not().isEmpty(),
+    check("password", "Укажите пароль базы данных").not().isEmpty(),
+  ],
+  async (req, res) => {
+    //validate requset
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      //get data from request
+      const { host, username, password } = req.body;
+      let user = await User.findById(req.user.id).select("-password");
+      user.options = { host, username, password };
+      await user.save();
+      res.json(user);
+    } catch {
+      console.error(error.message);
+      res.status(500).send("Ошибка сервера");
+    }
+  }
+);
 
 // @route POST api/users
 // @desc register new user
@@ -18,7 +49,7 @@ router.post(
     }),
   ],
   async (req, res) => {
-    //валидация запроса
+    //validate req
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });

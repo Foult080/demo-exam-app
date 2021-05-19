@@ -18,6 +18,11 @@ const UsersSchema = new mongoose.Schema({
     type: String,
     default: "expert",
   },
+  options: {
+    host: { type: String },
+    user: { type: String },
+    password: { type: String },
+  },
   date: {
     type: Date,
     default: Date.now,
