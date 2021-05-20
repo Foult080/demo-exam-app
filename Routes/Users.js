@@ -41,6 +41,7 @@ router.put(
 // @desc register new user
 router.post(
   "/",
+  auth,
   [
     check("name", "Укажите имя").not().isEmpty(),
     check("email", "укажите корректный email адрес").isEmail(),
@@ -49,6 +50,10 @@ router.post(
     }),
   ],
   async (req, res) => {
+    //check user grants
+    if (req.user.role !== "admin") {
+      return res.status(401).json({ msg: "Нет доступа" });
+    }
     //validate req
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

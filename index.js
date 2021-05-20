@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json({ extended: false }));
 
 //connect to mongoDB Atlas
-connectDB();
+//connectDB();
 
 app.use("/api/database/", require("./Routes/Db"));
 app.use("/api/users", require("./Routes/Users"));
