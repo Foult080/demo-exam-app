@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+//auth
+import { useDispatch } from "react-redux";
+import setAuthToken from "./Utils/setAuthToken";
+import { loadUser } from "./Reducers/AuthSlice";
+
+//components
 import Navigate from "./Components/Navigate";
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setAuthToken(localStorage.token);
+    dispatch(loadUser());
+  }, []);
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
-      <Navigate />
-      <Dashboard />
-    </div>
+    <Router>
+      <section style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
+        <Navigate />
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route exact path="/dashboard" component={Dashboard} />
+        </Switch>
+      </section>
+    </Router>
   );
 };
 

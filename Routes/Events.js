@@ -38,9 +38,9 @@ router.post(
 
 //@route GET api/events/
 //@desc get my events
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    const events = await Events.find();
+    const events = await Events.find(req.user.id);
     res.send(events);
   } catch (err) {
     console.error(err.message);
