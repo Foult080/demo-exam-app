@@ -5,7 +5,7 @@ const auth = require("../Middleware/Auth");
 const User = require("../Models/Users");
 const config = require("config");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 // @route POST api/auth
 // @desc authenticate user and get token
@@ -72,3 +72,5 @@ router.get("/", auth, async (req, res) => {
     res.status(500).send("Ошибка сервера");
   }
 });
+
+module.exports = router;

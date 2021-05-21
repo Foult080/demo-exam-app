@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Tab, Row, Col, Nav } from "react-bootstrap";
+import { BsFillGearFill, BsBriefcaseFill, BsKanbanFill } from "react-icons/bs";
 
 const Dashboard = () => {
   return (
@@ -10,10 +11,21 @@ const Dashboard = () => {
             <Col sm={3}>
               <Nav variant="pills" className="flex-column">
                 <Nav.Item>
-                  <Nav.Link eventKey="first">Tab 1</Nav.Link>
+                  <Nav.Link eventKey="first">
+                    <BsBriefcaseFill style={{ marginRight: "1rem" }} />
+                    События
+                  </Nav.Link>
                 </Nav.Item>
+                <Nav.Item></Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="second">Tab 2</Nav.Link>
+                  <Nav.Link eventKey="second">
+                    <BsKanbanFill style={{ marginRight: "1rem" }} />
+                    Статистика
+                  </Nav.Link>
+                  <Nav.Link eventKey="third">
+                    <BsFillGearFill style={{ marginRight: "1rem" }} />
+                    Настройки
+                  </Nav.Link>
                 </Nav.Item>
               </Nav>
             </Col>
@@ -24,6 +36,9 @@ const Dashboard = () => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="second">
                   <h1>Hello from pane 2А</h1>
+                </Tab.Pane>
+                <Tab.Pane eventKey="third">
+                  <h1>Hello from statistics</h1>
                 </Tab.Pane>
               </Tab.Content>
             </Col>

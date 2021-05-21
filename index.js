@@ -11,10 +11,14 @@ app.use(cors());
 app.use(express.json({ extended: false }));
 
 //connect to mongoDB Atlas
-//connectDB();
+connectDB();
 
+//api routes
 app.use("/api/database/", require("./Routes/Db"));
 app.use("/api/users", require("./Routes/Users"));
+app.use("/api/auth", require("./Routes/Auth"));
+app.use("/api/events", require("./Routes/Events"));
+
 
 //resolve static folder for react app
 app.use(express.static("front-app/build"));

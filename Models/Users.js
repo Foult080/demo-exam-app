@@ -19,9 +19,9 @@ const UsersSchema = new mongoose.Schema({
     default: "expert",
   },
   options: {
-    host: { type: String },
-    user: { type: String },
-    password: { type: String },
+    host: { type: String, default: "localhost" },
+    user: { type: String, default: "root" },
+    password: { type: String, default: "root" },
   },
   date: {
     type: Date,
