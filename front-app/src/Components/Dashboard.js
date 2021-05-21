@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Tab, Row, Col, Nav } from "react-bootstrap";
 import { BsFillGearFill, BsBriefcaseFill, BsKanbanFill } from "react-icons/bs";
+import Events from "./Events";
 
 const Dashboard = () => {
   return (
@@ -32,7 +33,7 @@ const Dashboard = () => {
             <Col sm={9}>
               <Tab.Content>
                 <Tab.Pane eventKey="first">
-                  <h1>Hello world</h1>
+                  <Events />
                 </Tab.Pane>
                 <Tab.Pane eventKey="second">
                   <h1>Hello from pane 2А</h1>

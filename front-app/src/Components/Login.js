@@ -29,7 +29,7 @@ const Login = () => {
           <a
             href="https://github.com/Foult080"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             @foult080
           </a>{" "}

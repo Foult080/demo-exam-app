@@ -38,9 +38,9 @@ router.post(
 
 //@route GET api/events/
 //@desc get my events
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const events = await Events.find({ expert: req.user.id });
+    const events = await Events.find();
     res.send(events);
   } catch (err) {
     console.error(err.message);
@@ -74,5 +74,17 @@ router.put(
     }
   }
 );
+
+//@route DELETE api/events/:id
+//@desc delete event by id
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    await Events.findOneAndRemove(req.params.id);
+    res.json({ msg: "Событие удалено" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Ошибка сервера" });
+  }
+});
 
 module.exports = router;
