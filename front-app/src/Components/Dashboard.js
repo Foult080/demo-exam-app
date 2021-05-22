@@ -9,7 +9,7 @@ const Dashboard = () => {
       <Container>
         <Tab.Container id="left-tabs-example" defaultActiveKey="first">
           <Row>
-            <Col sm={3}>
+            <Col sm={2}>
               <Nav variant="pills" className="flex-column">
                 <Nav.Item>
                   <Nav.Link eventKey="first">
@@ -30,7 +30,7 @@ const Dashboard = () => {
                 </Nav.Item>
               </Nav>
             </Col>
-            <Col sm={9}>
+            <Col sm={10}>
               <Tab.Content>
                 <Tab.Pane eventKey="first">
                   <Events />

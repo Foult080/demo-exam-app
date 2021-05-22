@@ -2,17 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  event: { name: "new Event", options: "some options" },
-  loading: 'idle',
+  events: [],
+  loading: "true",
 };
 
-export const fetchEvents = createAsyncThunk(
-    'events/fetchEvents',
-    async () => {
-        const res = await axios.get("/api/events");
-        return res.data;
-    }
-)
+export const fetchEvents = createAsyncThunk("events/fetchEvents", async () => {
+  const res = await axios.get("/api/events");
+  return res.data;
+});
 
 export const EventsSlice = createSlice({
   name: "events",
@@ -22,18 +19,16 @@ export const EventsSlice = createSlice({
       state.loading = false;
     },
     setEvents: (state, actions) => {
-        state.event = actions.payload;
-        state.loading = false;
-    }
+      state.event = actions.payload;
+      state.loading = false;
+    },
   },
   extraReducers: (builder) => {
-        builder.addCase(fetchEvents.pending, state => {
-            state.loading = true;
-        }).addCase(fetchEvents.fulfilled, (state, action) =>{
-            state.loading = false;
-            state.event = action.payload;
-        })
-  }
+    builder.addCase(fetchEvents.fulfilled, (state, action) => {
+      state.loading = false;
+      state.events = action.payload;
+    });
+  },
 });
 
 export const { getEvents, setEvents } = EventsSlice.actions;

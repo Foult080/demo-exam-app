@@ -34,7 +34,7 @@ const Navigate = () => {
             </Button>
           </div>
         ) : (
-          <Nav>Вы вошли как: Гость</Nav>
+          <Nav></Nav>
         )}
       </Container>
     </Navbar>

@@ -40,7 +40,7 @@ router.post(
 //@desc get my events
 router.get("/", auth, async (req, res) => {
   try {
-    const events = await Events.find(req.user.id);
+    const events = await Events.find({ expert: req.user.id });
     res.send(events);
   } catch (err) {
     console.error(err.message);
