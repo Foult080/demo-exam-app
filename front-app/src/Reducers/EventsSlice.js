@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
   events: [],
-  loading: "true",
+  loading: true,
 };
 
 export const fetchEvents = createAsyncThunk("events/fetchEvents", async () => {
@@ -15,6 +15,10 @@ export const EventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
+    clearEvents: (state) => {
+      state.events = [];
+      state.loading = true;
+    },
     getEvents: (state) => {
       state.loading = false;
     },
@@ -31,7 +35,7 @@ export const EventsSlice = createSlice({
   },
 });
 
-export const { getEvents, setEvents } = EventsSlice.actions;
+export const { getEvents, setEvents, clearEvents } = EventsSlice.actions;
 
 export const selectEvents = (state) => state.events;
 
