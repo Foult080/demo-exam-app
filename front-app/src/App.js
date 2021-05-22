@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import setAuthToken from "./Utils/setAuthToken";
 import { loadUser } from "./Reducers/AuthSlice";
+import PrivateRoute from "./Components/PrivateRoute";
 
 //components
 import Navigate from "./Components/Navigate";
@@ -23,7 +24,7 @@ const App = () => {
         <Navigate />
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
         </Switch>
       </section>
     </Router>
