@@ -14,10 +14,10 @@ app.use(express.json({ extended: false }));
 connectDB();
 
 //api routes
-app.use("/api/database/", require("./Routes/Db"));
-app.use("/api/users", require("./Routes/Users"));
-app.use("/api/auth", require("./Routes/Auth"));
-app.use("/api/events", require("./Routes/Events"));
+app.use("/api/database/", require("./routes/Db"));
+app.use("/api/users", require("./routes/Users"));
+app.use("/api/auth", require("./routes/Auth"));
+app.use("/api/events", require("./routes/Events"));
 
 //resolve static folder for react app
 app.use(express.static("front-app/build"));

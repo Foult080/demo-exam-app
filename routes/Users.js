@@ -4,8 +4,8 @@ const { check, validationResult } = require("express-validator");
 const config = require("config");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../Models/Users");
-const auth = require("../Middleware/Auth");
+const User = require("../models/Users");
+const auth = require("../middleware/Auth");
 
 //@route PUT /api/users
 //desc add database options to user record

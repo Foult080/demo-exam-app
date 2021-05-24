@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
-const Events = require("../Models/Events");
-const auth = require("../Middleware/Auth");
+const Events = require("../models/Events");
+const auth = require("../middleware/Auth");
 
 //@route POST api/events/
 //@desc add new event
