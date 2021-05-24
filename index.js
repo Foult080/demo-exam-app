@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cors = require("cors");
-const connectDB = require("./Config/db");
+const connectDB = require("./config/db");
 
 //use cors policy
 app.use(cors());
@@ -18,7 +18,6 @@ app.use("/api/database/", require("./Routes/Db"));
 app.use("/api/users", require("./Routes/Users"));
 app.use("/api/auth", require("./Routes/Auth"));
 app.use("/api/events", require("./Routes/Events"));
-
 
 //resolve static folder for react app
 app.use(express.static("front-app/build"));
