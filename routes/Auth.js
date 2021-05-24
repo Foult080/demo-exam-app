@@ -7,6 +7,10 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const isMatch = (password, userPass) => {
+  return bcrypt.compare(password, userPass);
+};
+
 // @route POST api/auth
 // @desc authenticate user and get token
 router.post(
@@ -27,33 +31,27 @@ router.post(
     try {
       //check user
       let user = await User.findOne({ email });
-      if (!user) {
-        res.status(401).json({ errors: [{ msg: "Неверные данные" }] });
-      }
+      if (user && (await isMatch(password, user.password))) {
+        //gen token
+        const payload = {
+          user: {
+            id: user.id,
+            role: user.role,
+          },
+        };
 
-      //check pass
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
+        jwt.sign(
+          payload,
+          config.get("JWT"),
+          { expiresIn: 21600 },
+          (error, token) => {
+            if (error) throw error;
+            res.json({ token, user });
+          }
+        );
+      } else {
         return res.status(401).json({ errors: [{ msg: "Неверные данные" }] });
       }
-
-      //gen token
-      const payload = {
-        user: {
-          id: user.id,
-          role: user.role,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        config.get("JWT"),
-        { expiresIn: 21600 },
-        (error, token) => {
-          if (error) throw error;
-          res.json({ token, user });
-        }
-      );
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Ошибка сервера");
