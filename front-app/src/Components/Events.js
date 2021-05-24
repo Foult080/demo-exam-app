@@ -11,20 +11,21 @@ import {
 const Events = () => {
   const dispatch = useDispatch();
   const { events, loading } = useSelector(selectEvents);
-  console.log(events, loading);
 
   useEffect(() => {
     dispatch(fetchEvents());
-  }, [fetchEvents]);
+  }, [dispatch]);
 
-  console.log(events);
-
-  return (
+  return !loading && events == null ? (
+    <Container>
+      <h2>Загрузка данных...</h2>
+    </Container>
+  ) : (
     <Container>
       <CardDeck>
         <Row>
           {events.map((item) => (
-            <Col md={4} lg={4} className="mt-2">
+            <Col md={5} lg={5} className="mt-2" key={item._id}>
               <Card>
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>

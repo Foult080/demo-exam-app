@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { useFormik } from "formik";
-import { login, selectAuth } from "../Reducers/AuthSlice";
-import { Container, Form, Button } from "react-bootstrap";
+import { login, selectAuth, removeAlert } from "../Reducers/AuthSlice";
+import { Container, Form, Button, Alert } from "react-bootstrap";
 
 const Login = () => {
   const auth = useSelector(selectAuth);
@@ -16,6 +16,9 @@ const Login = () => {
     },
     onSubmit: (values) => {
       dispatch(login(values));
+      formik.values.email = "";
+      formik.values.password = "";
+      dispatch(removeAlert());
     },
   });
 
@@ -27,6 +30,8 @@ const Login = () => {
   return (
     <Container>
       <div style={styles.main}>
+        {auth.errors &&
+          auth.errors.map((item) => <Alert variant="danger">{item.msg}</Alert>)}
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group className="floatingInput">
             <Form.Label>Email</Form.Label>

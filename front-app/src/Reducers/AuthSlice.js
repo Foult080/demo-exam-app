@@ -8,16 +8,17 @@ const config = {
   },
 };
 
-export const mess = () => {
-  console.log("Hello from mess func");
-};
-
-export const login = createAsyncThunk("auth/login", async (data) => {
-  const res = await axios.post("/api/auth/", data, config);
-  loadUser();
-  mess();
-  return res.data;
-});
+export const login = createAsyncThunk(
+  "auth/login",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("/api/auth/", data, config);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.errors);
+    }
+  }
+);
 
 export const loadUser = createAsyncThunk("auth/loadUser", async () => {
   if (localStorage.token) {
@@ -32,6 +33,7 @@ const initialState = {
   isAuth: null,
   loading: true,
   user: null,
+  errors: [],
 };
 
 export const AuthSlice = createSlice({
@@ -44,6 +46,9 @@ export const AuthSlice = createSlice({
       state.loading = true;
       state.user = null;
       localStorage.removeItem("token");
+    },
+    removeAlert: (state) => {
+      state.errors = [];
     },
   },
   extraReducers: (builder) => {
@@ -58,12 +63,16 @@ export const AuthSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        setAuthToken(action.payload.token);
         localStorage.setItem("token", action.payload.token);
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.errors = action.payload;
       });
   },
 });
 
-export const { logOut } = AuthSlice.actions;
+export const { logOut, removeAlert } = AuthSlice.actions;
 
 export const selectAuth = (state) => state.auth;
 

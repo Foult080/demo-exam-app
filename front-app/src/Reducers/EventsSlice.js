@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
   events: [],
-  loading: true,
+  loading: "true",
 };
 
 export const fetchEvents = createAsyncThunk("events/fetchEvents", async () => {

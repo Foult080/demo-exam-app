@@ -11,16 +11,10 @@ const PrivateRoute = ({ component: Component, ...otherProps }) => {
     <Route
       {...otherProps}
       render={(props) =>
-        !auth.loading ? (
-          auth.isAuth ? (
-            <Component {...props} />
-          ) : (
-            <Redirect
-              to={otherProps.redirectTo ? otherProps.redirectTo : "/signin"}
-            />
-          )
+        !auth.loading && auth.isAuth ? (
+          <Component {...props} />
         ) : (
-          <h1>Hello world</h1>
+          <Redirect to={"/"} />
         )
       }
     />
