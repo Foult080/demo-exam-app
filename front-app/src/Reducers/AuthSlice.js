@@ -28,6 +28,30 @@ export const loadUser = createAsyncThunk("auth/loadUser", async () => {
   return res.data;
 });
 
+export const checkDB = createAsyncThunk(
+  "auth/checkDB",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("/api/database/check", data, config);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.errors);
+    }
+  }
+);
+
+export const changeConnection = createAsyncThunk(
+  "auth/changeConnection",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.put("/api/users/", data, config);
+      return res.data;
+    } catch (errors) {
+      return rejectWithValue(errors.response.data.errors);
+    }
+  }
+);
+
 const initialState = {
   token: localStorage.getItem("token"),
   isAuth: null,
@@ -67,6 +91,16 @@ export const AuthSlice = createSlice({
         localStorage.setItem("token", action.payload.token);
       })
       .addCase(login.rejected, (state, action) => {
+        state.errors = action.payload;
+      })
+      .addCase(checkDB.fulfilled, (state, action) => {
+        state.errors = action.payload;
+      })
+      .addCase(changeConnection.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.errors = { msg: "Подключение обновлено", variant: "success" };
+      })
+      .addCase(changeConnection.rejected, (state, action) => {
         state.errors = action.payload;
       });
   },

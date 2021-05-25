@@ -18,7 +18,7 @@ const Login = () => {
       dispatch(login(values));
       formik.values.email = "";
       formik.values.password = "";
-      dispatch(removeAlert());
+      setTimeout(() => dispatch(removeAlert()), 5000);
     },
   });
 

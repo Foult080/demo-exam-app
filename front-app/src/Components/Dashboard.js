@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Tab, Row, Col, Nav } from "react-bootstrap";
 import { BsFillGearFill, BsBriefcaseFill, BsKanbanFill } from "react-icons/bs";
 import Events from "./Events";
+import Options from "./Options/Options";
 
 const Dashboard = () => {
   return (
@@ -39,7 +40,7 @@ const Dashboard = () => {
                   <h1>Hello from pane 2А</h1>
                 </Tab.Pane>
                 <Tab.Pane eventKey="third">
-                  <h1>Hello from statistics</h1>
+                  <Options />
                 </Tab.Pane>
               </Tab.Content>
             </Col>

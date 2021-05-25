@@ -2,21 +2,19 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql2");
 
-const initialConnect = {
-  host: "192.168.70.5",
-  user: "appuser",
-  password: "pass",
-  insecureAuth: true,
-};
-
 //@route GET api/database/check
 //@desc check connection to db
-router.get("/check", async (req, res) => {
+router.post("/check", async (req, res) => {
+  const { host, username, password } = req.body;
   try {
-    mysql.createConnection(initialConnect).connect((err) => {
-      if (err) throw err;
-      else res.json({ msg: "MySQL Connected" });
-    });
+    mysql
+      .createConnection({ host, user: username, password })
+      .connect((err) => {
+        if (err) {
+          res.json({ msg: "MySQL NOT Connected", variant: "danger" });
+          console.log(err);
+        } else res.json({ msg: "MySQL Connected", variant: "success" });
+      });
   } catch (err) {
     res.status(500).send("Ошибка сервера");
     throw err;

@@ -20,7 +20,7 @@ const UsersSchema = new mongoose.Schema({
   },
   options: {
     host: { type: String, default: "localhost" },
-    user: { type: String, default: "root" },
+    username: { type: String, default: "root" },
     password: { type: String, default: "root" },
   },
   date: {
