@@ -52,6 +52,18 @@ export const changeConnection = createAsyncThunk(
   }
 );
 
+export const addExpert = createAsyncThunk(
+  "auth/addExpert",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("/api/users", data, config);
+      return res.data;
+    } catch (errors) {
+      return rejectWithValue(errors.response.data.errors);
+    }
+  }
+);
+
 const initialState = {
   token: localStorage.getItem("token"),
   isAuth: null,
@@ -98,9 +110,12 @@ export const AuthSlice = createSlice({
       })
       .addCase(changeConnection.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.errors = { msg: "Подключение обновлено", variant: "success" };
+        state.errors = [{ msg: "Подключение обновлено", variant: "success" }];
       })
       .addCase(changeConnection.rejected, (state, action) => {
+        state.errors = action.payload;
+      })
+      .addCase(addExpert.fulfilled, (state, action) => {
         state.errors = action.payload;
       });
   },

@@ -6,6 +6,7 @@ import {
   checkDB,
   removeAlert,
   changeConnection,
+  addExpert,
 } from "../../Reducers/AuthSlice";
 import { Container, Form, Button, Col, Row, Alert } from "react-bootstrap";
 import {
@@ -26,7 +27,6 @@ const Options = () => {
   const formikOptions = useFormik({
     initialValues: user.options ? user.options : initialState,
     onSubmit: (values) => {
-      console.log(values);
       dispatch(changeConnection(values));
     },
   });
@@ -48,7 +48,7 @@ const Options = () => {
       passwordEx: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(addExpert(values));
     },
   });
 
@@ -58,7 +58,8 @@ const Options = () => {
         <h2>Настройки</h2>
         <hr />
       </div>
-      {errors && <Alert variant={errors.variant}>{errors.msg}</Alert>}
+      {errors &&
+        errors.map((item) => <Alert variant={item.variant}>{item.msg}</Alert>)}
       <Row>
         <Col md={6} lg={6}>
           <div className="text-center">
@@ -147,8 +148,11 @@ const Options = () => {
               />
             </Form.Group>
           </Form>
-
-          <Button className="mt-2" variant="primary">
+          <Button
+            className="mt-2"
+            variant="primary"
+            onClick={formikUser.handleSubmit}
+          >
             <Person style={styles.icons} /> Добавить эксперта
           </Button>
         </Col>

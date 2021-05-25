@@ -39,71 +39,45 @@ router.put(
 
 // @route POST api/users
 // @desc register new user
-router.post(
-  "/",
-  auth,
-  [
-    check("name", "Укажите имя").not().isEmpty(),
-    check("email", "укажите корректный email адрес").isEmail(),
-    check("password", "Укажите пароль длинной минимум 8 символов!").isLength({
-      min: 8,
-    }),
-  ],
-  async (req, res) => {
-    //check user grants
-    if (req.user.role !== "admin") {
-      return res.status(401).json({ msg: "Нет доступа" });
-    }
-    //validate req
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    const { name, email, password, role } = req.body;
-    try {
-      //check email
-      let user = await User.findOne({ email });
-      if (user) {
-        res
-          .status(400)
-          .json({ errors: [{ msg: "Пользователь уже зарегистрирован" }] });
-      }
-
-      //create user obj
-      user = new User({
-        name,
-        email,
-        password,
-        role,
-      });
-
-      //hash pass
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-      //save user
-      await user.save();
-      //gen token
-      const payload = {
-        user: {
-          id: user.id,
-          role: user.role,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        config.get("JWT"),
-        { expiresIn: 36000 },
-        (error, token) => {
-          if (error) throw error;
-          res.json({ token });
-        }
-      );
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Ошибка сервера");
-    }
+router.post("/", auth, async (req, res) => {
+  //check user grants
+  if (req.user.role !== "admin") {
+    return res.status(401).json({ msg: "Нет доступа" });
   }
-);
+  //validate req
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { name, email, passwordEx, role } = req.body;
+  try {
+    //check email
+    let user = await User.findOne({ email });
+    if (user) {
+      res.status(400).json([{
+        msg: "Пользователь уже зарегистрирован",
+        variant: "success",
+      }]);
+    }
+
+    //create user obj
+    user = new User({
+      name,
+      email,
+      password: passwordEx,
+      role,
+    });
+
+    //hash pass
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(passwordEx, salt);
+    //save user
+    await user.save();
+    res.json([{ msg: "Эксперn добавлен", variant: "success" }]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Ошибка сервера");
+  }
+});
 
 module.exports = router;

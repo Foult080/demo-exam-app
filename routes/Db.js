@@ -11,9 +11,9 @@ router.post("/check", async (req, res) => {
       .createConnection({ host, user: username, password })
       .connect((err) => {
         if (err) {
-          res.json({ msg: "MySQL NOT Connected", variant: "danger" });
+          res.json([{ msg: "MySQL NOT Connected", variant: "danger" }]);
           console.log(err);
-        } else res.json({ msg: "MySQL Connected", variant: "success" });
+        } else res.json([{ msg: "MySQL Connected", variant: "success" }]);
       });
   } catch (err) {
     res.status(500).send("Ошибка сервера");
