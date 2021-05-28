@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectEvents, fetchEvents } from "../Reducers/EventsSlice";
-import formatDate from "../Utils/formatDate";
+import { selectEvents, fetchEvents } from "../../Reducers/EventsSlice";
+import formatDate from "../../Utils/formatDate";
+import ModalScreen from "./ModalScreen";
 import { Container, CardDeck, Card, Col, Row, Button } from "react-bootstrap";
 import {
   BsFillTrashFill as Trash,
@@ -16,12 +17,24 @@ const Events = () => {
     dispatch(fetchEvents());
   }, [dispatch]);
 
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(!show);
+  };
+
   return !loading && events == null ? (
     <Container>
       <h2>Загрузка данных...</h2>
     </Container>
   ) : (
     <Container>
+      <ModalScreen
+        show={show}
+        handleClose={handleClose}
+        title={"Удалить событие"}
+        msg={"Вы действительно хотите удалить событие?"}
+      />
+
       <CardDeck>
         <Row>
           {events.map((item) => (
@@ -43,6 +56,7 @@ const Events = () => {
                     <Button
                       style={{ marginLeft: "0.5em" }}
                       variant="outline-danger"
+                      onClick={handleClose}
                     >
                       <Trash style={{ marginRight: "5px" }} /> Удалить
                     </Button>

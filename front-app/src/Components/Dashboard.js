@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Tab, Row, Col, Nav } from "react-bootstrap";
 import { BsFillGearFill, BsBriefcaseFill, BsKanbanFill } from "react-icons/bs";
-import Events from "./Events";
+import Events from "./Events/Events";
 import Options from "./Options/Options";
 
 const Dashboard = () => {

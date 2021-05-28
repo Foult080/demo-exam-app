@@ -11,6 +11,11 @@ export const fetchEvents = createAsyncThunk("events/fetchEvents", async () => {
   return res.data;
 });
 
+export const deleteEvents = createAsyncThunk("events/deleteEvents", async (id) => {
+  const res = await axios.delete(`/api/events/${id}`);
+  return res.data;
+})
+
 export const EventsSlice = createSlice({
   name: "events",
   initialState,
