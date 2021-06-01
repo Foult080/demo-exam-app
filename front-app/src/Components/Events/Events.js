@@ -1,9 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectEvents, fetchEvents } from "../../Reducers/EventsSlice";
+import {
+  selectEvents,
+  fetchEvents,
+  deleteEvents,
+} from "../../Reducers/EventsSlice";
 import formatDate from "../../Utils/formatDate";
-import ModalScreen from "./ModalScreen";
-import { Container, CardDeck, Card, Col, Row, Button } from "react-bootstrap";
+import {
+  Container,
+  CardDeck,
+  Card,
+  Col,
+  Row,
+  Button,
+  Alert,
+} from "react-bootstrap";
 import {
   BsFillTrashFill as Trash,
   BsPencilSquare as Pencil,
@@ -11,62 +22,69 @@ import {
 
 const Events = () => {
   const dispatch = useDispatch();
-  const { events, loading } = useSelector(selectEvents);
+  const { events, loading, errors } = useSelector(selectEvents);
 
   useEffect(() => {
     dispatch(fetchEvents());
-  }, [dispatch]);
+  }, [fetchEvents]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    setShow(!show);
+  const delEvent = (id) => {
+    if (window.confirm("Вы действительно хотите удалить событие?")) {
+      console.log(id + "удалено");
+      dispatch(deleteEvents(id));
+    }
   };
 
-  return !loading && events == null ? (
+  console.log(events);
+
+  return loading ? (
     <Container>
       <h2>Загрузка данных...</h2>
     </Container>
   ) : (
     <Container>
-      <ModalScreen
-        show={show}
-        handleClose={handleClose}
-        title={"Удалить событие"}
-        msg={"Вы действительно хотите удалить событие?"}
-      />
-
-      <CardDeck>
-        <Row>
-          {events.map((item) => (
-            <Col md={5} lg={5} className="mt-2" key={item._id}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>{item.name}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Дата создания: {formatDate(item.date)}
-                  </Card.Subtitle>
-                  <Card.Text className="text-right">
-                    Всего студентов: {item.students.length}
-                  </Card.Text>
-                  <div style={{ textAlign: "right" }}>
-                    <Button variant="outline-primary">
-                      <Pencil style={{ marginRight: "5px" }} />
-                      Подробнее
-                    </Button>
-                    <Button
-                      style={{ marginLeft: "0.5em" }}
-                      variant="outline-danger"
-                      onClick={handleClose}
-                    >
-                      <Trash style={{ marginRight: "5px" }} /> Удалить
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </CardDeck>
+      {!events.length ? (
+        <h1 className="text-center">Мероприятий пока нет...</h1>
+      ) : (
+        <div>
+          {errors &&
+            errors.map((item) => (
+              <Alert variant={item.variant}>{item.msg}</Alert>
+            ))}
+          <CardDeck>
+            <Row>
+              {events.map((item) => (
+                <Col md={5} lg={5} className="mt-2" key={item._id}>
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>{item.name}</Card.Title>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Дата создания: {formatDate(item.date)}
+                      </Card.Subtitle>
+                      <Card.Text className="text-right">
+                        Всего студентов: {item.students.length}
+                      </Card.Text>
+                      <div style={{ textAlign: "right" }}>
+                        <Button variant="outline-primary">
+                          <Pencil style={{ marginRight: "5px" }} />
+                          Подробнее
+                        </Button>
+                        <Button
+                          style={{ marginLeft: "0.5em" }}
+                          variant="outline-danger"
+                          onClick={() => delEvent(item._id)}
+                        >
+                          <Trash style={{ marginRight: "5px" }} /> Удалить
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </CardDeck>
+        </div>
+      )}
     </Container>
   );
 };

@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
   events: [],
+  errors: [],
   loading: "true",
 };
 
@@ -11,10 +12,17 @@ export const fetchEvents = createAsyncThunk("events/fetchEvents", async () => {
   return res.data;
 });
 
-export const deleteEvents = createAsyncThunk("events/deleteEvents", async (id) => {
-  const res = await axios.delete(`/api/events/${id}`);
-  return res.data;
-})
+export const deleteEvents = createAsyncThunk(
+  "events/deleteEvents",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(`/api/events/${id}`);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.errors);
+    }
+  }
+);
 
 export const EventsSlice = createSlice({
   name: "events",
@@ -33,10 +41,21 @@ export const EventsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchEvents.fulfilled, (state, action) => {
-      state.loading = false;
-      state.events = action.payload;
-    });
+    builder
+      .addCase(fetchEvents.fulfilled, (state, action) => {
+        state.loading = false;
+        state.events = action.payload;
+      })
+      .addCase(deleteEvents.fulfilled, (state, action) => {
+        let data = state.events.filter((item) => item._id !== action.meta.arg);
+        state.events = data;
+        state.errors = action.payload;
+        setTimeout(() => (state.errors = []), 5000);
+      })
+      .addCase(deleteEvents.rejected, (state, action) => {
+        state.errors = action.payload;
+        state.loading = false;
+      });
   },
 });
 

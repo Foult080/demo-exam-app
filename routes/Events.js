@@ -80,10 +80,10 @@ router.put(
 router.delete("/:id", auth, async (req, res) => {
   try {
     await Events.findOneAndRemove(req.params.id);
-    res.json({ msg: "Событие удалено" });
+    res.json([{ msg: "Событие удалено", variant: "success" }]);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ msg: "Ошибка сервера" });
+    res.status(500).json([{ msg: "Ошибка сервера", variant: "danger"}]);
   }
 });
 
