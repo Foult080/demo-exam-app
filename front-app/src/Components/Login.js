@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { useFormik } from "formik";
-import { login, selectAuth, removeAlert } from "../Reducers/AuthSlice";
+import { login, selectAuth, clearErrors } from "../Reducers/AuthSlice";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 
 const Login = () => {
@@ -15,10 +15,9 @@ const Login = () => {
       password: "",
     },
     onSubmit: (values) => {
-      dispatch(login(values));
+      dispatch(login(values)).then(dispatch(clearErrors()));
       formik.values.email = "";
       formik.values.password = "";
-      setTimeout(() => dispatch(removeAlert()), 5000);
     },
   });
 

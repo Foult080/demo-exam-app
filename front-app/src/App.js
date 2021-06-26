@@ -11,6 +11,7 @@ import store from "./store";
 import Navigate from "./Components/Navigate";
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
+import EditEvent from "./Components/Events/EditEvent";
 
 const App = () => {
   useEffect(() => {
@@ -24,6 +25,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Login} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <PrivateRoute exact path="/create-event" component={EditEvent} />
         </Switch>
       </section>
     </Router>

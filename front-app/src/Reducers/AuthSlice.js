@@ -125,4 +125,11 @@ export const { logOut, removeAlert } = AuthSlice.actions;
 
 export const selectAuth = (state) => state.auth;
 
+export const clearErrors = () => (dispatch) => {
+  setTimeout(() => {
+    console.log("Hello WORLD");
+    dispatch(removeAlert());
+  }, 5000);
+};
+
 export default AuthSlice.reducer;

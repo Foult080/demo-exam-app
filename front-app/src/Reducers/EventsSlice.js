@@ -1,8 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const config = {
+  headers: {
+    "Content-type": "application/json",
+  },
+};
+
 const initialState = {
   events: [],
+  event: {},
   errors: [],
   loading: "true",
 };
@@ -17,6 +24,18 @@ export const deleteEvents = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const res = await axios.delete(`/api/events/${id}`);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.errors);
+    }
+  }
+);
+
+export const createEvent = createAsyncThunk(
+  "events/createEvent",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("/api/events/", data, config);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data.errors);
@@ -55,7 +74,10 @@ export const EventsSlice = createSlice({
       .addCase(deleteEvents.rejected, (state, action) => {
         state.errors = action.payload;
         state.loading = false;
-      });
+      }).addCase(createEvent.fulfilled, (state, action) => {
+        state.event = action.payload;
+        console.log(initialState);
+      })
   },
 });
 

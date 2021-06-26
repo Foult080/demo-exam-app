@@ -6,6 +6,7 @@ import {
   deleteEvents,
 } from "../../Reducers/EventsSlice";
 import formatDate from "../../Utils/formatDate";
+import { Link } from "react-router-dom";
 import {
   Container,
   CardDeck,
@@ -30,7 +31,6 @@ const Events = () => {
 
   const delEvent = (id) => {
     if (window.confirm("Вы действительно хотите удалить событие?")) {
-      console.log(id + "удалено");
       dispatch(deleteEvents(id));
     }
   };
@@ -83,6 +83,11 @@ const Events = () => {
               ))}
             </Row>
           </CardDeck>
+          <div className="text-center mt-2">
+            <Link to="/create-event">
+              <Button variant="success">Добавить событие</Button>
+            </Link>
+          </div>
         </div>
       )}
     </Container>
